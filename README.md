@@ -341,6 +341,5 @@ Adds CORS, Cache-Control, and ETag headers.
 
 Base64-encodes binary tile data for Lambda proxy integration.
 
-Optionally gzip-compresses the response body for API Gateway style calls (mirroring the i flag in your original).
+Optionally gzip-compresses the response body for API Gateway style calls (mirroring the i flag in the original).
 
-If you’d like, I can also sketch a Python Lambda version doing the same thing using the pmtiles Python library and boto3, but sticking to Node here keeps it closest to your existing CloudFormation template (nodejs22.x runtime).

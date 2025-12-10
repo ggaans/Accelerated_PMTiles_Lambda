@@ -309,3 +309,38 @@ proper Content-Type
 Cache-Control, ETag, optional gzip
 
 CORS if configured.
+
+
+
+
+Notes / differences vs the original inlined bundle
+
+PMTiles logic is delegated to the pmtiles library instead of a massive inlined decoder:
+
+PMTiles + SharedPromiseCache replace all the getHeader, ye, Xe, tt etc. functions you saw in the minified code.
+
+S3 reading is done via a clean S3PmtilesSource class:
+
+Uses Range header.
+
+Optional IfMatch with ETag if PMTiles asks for it.
+
+Supports requester-pays via RequestPayer: "requester" (like the original).
+
+Path parsing is explicit and readable with two regexes.
+
+It still:
+
+Validates minZoom / maxZoom.
+
+Ensures requested extension matches the archive tile type.
+
+Builds TileJSON with correct URLs using PUBLIC_HOSTNAME or x-distribution-domain-name.
+
+Adds CORS, Cache-Control, and ETag headers.
+
+Base64-encodes binary tile data for Lambda proxy integration.
+
+Optionally gzip-compresses the response body for API Gateway style calls (mirroring the i flag in your original).
+
+If you’d like, I can also sketch a Python Lambda version doing the same thing using the pmtiles Python library and boto3, but sticking to Node here keeps it closest to your existing CloudFormation template (nodejs22.x runtime).
